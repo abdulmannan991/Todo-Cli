@@ -96,3 +96,33 @@ class TodoStore:
             return False
         self._tasks.remove(task)
         return True
+
+    def update_task_title(self, task_id: int, new_title: str) -> Optional[Task]:
+        """Update the title of an existing task by its ID.
+
+        Args:
+            task_id: The ID of the task to update
+            new_title: The new title for the task (must be non-empty, 1-1000 characters)
+
+        Returns:
+            The updated Task object if found, None otherwise
+
+        Raises:
+            ValueError: If new_title is empty or exceeds 1000 characters
+
+        Note:
+            Title validation follows the same rules as task creation.
+        """
+        task: Optional[Task] = self.get_task(task_id)
+        if task is None:
+            return None
+
+        # Validate new title (same rules as Task.__post_init__)
+        if not new_title or len(new_title) == 0:
+            raise ValueError("Task title cannot be empty")
+        if len(new_title) > 1000:
+            raise ValueError("Task title cannot exceed 1000 characters")
+
+        # Update the title
+        task.title = new_title
+        return task

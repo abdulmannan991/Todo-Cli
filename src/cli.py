@@ -198,7 +198,8 @@ def start_interactive_mode(store: TodoStore) -> int:
         print("2. View Tasks")
         print("3. Update Task (Complete)")
         print("4. Delete Task")
-        print("5. Exit")
+        print("5. Edit Task Title")
+        print("6. Exit")
         print()
 
         # Get user choice with yellow prompt
@@ -250,9 +251,31 @@ def start_interactive_mode(store: TodoStore) -> int:
                 print(f"{Colors.ERROR}Error: Invalid ID format. Please provide a positive integer.{Colors.RESET}", file=sys.stderr)
 
         elif choice == "5":
+            # Edit Task Title
+            task_id_str: str = input(f"{Colors.PENDING}Enter task ID to edit: {Colors.RESET}").strip()
+            try:
+                task_id: int = int(task_id_str)
+                new_title: str = input(f"{Colors.PENDING}Enter new title: {Colors.RESET}").strip()
+
+                if not new_title:
+                    print(f"{Colors.ERROR}Error: Task title cannot be empty{Colors.RESET}", file=sys.stderr)
+                    continue
+
+                result: Optional[Task] = store.update_task_title(task_id, new_title)
+                if result is None:
+                    print(f"{Colors.ERROR}Error: Task with ID {task_id} not found{Colors.RESET}", file=sys.stderr)
+                else:
+                    print(f"{Colors.SUCCESS}Task {result.id} title updated successfully!{Colors.RESET}")
+            except ValueError as e:
+                if "Invalid literal" in str(e) or "invalid literal" in str(e):
+                    print(f"{Colors.ERROR}Error: Invalid ID format. Please provide a positive integer.{Colors.RESET}", file=sys.stderr)
+                else:
+                    print(f"{Colors.ERROR}Error: {e}{Colors.RESET}", file=sys.stderr)
+
+        elif choice == "6":
             # Exit
             print(f"{Colors.SUCCESS}Goodbye!{Colors.RESET}")
             return 0
 
         else:
-            print(f"{Colors.ERROR}Error: Invalid choice. Please select 1-5.{Colors.RESET}", file=sys.stderr)
+            print(f"{Colors.ERROR}Error: Invalid choice. Please select 1-6.{Colors.RESET}", file=sys.stderr)

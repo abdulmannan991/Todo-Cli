@@ -7,7 +7,7 @@ surface: agent
 model: claude-sonnet-4-5
 feature: 001-todo-cli-mvp
 branch: 001-todo-cli-mvp
-user: wajiz.pk
+user:  Abdul Mannan
 command: sp.implement
 labels: ["implementation", "cli", "stylized-output", "ansi-colors", "type-hints"]
 links:
